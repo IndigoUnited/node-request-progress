@@ -1,6 +1,4 @@
-# request-progress
-
-[![Build Status](https://secure.travis-ci.org/IndigoUnited/node-request-progress.png)](http://travis-ci.org/IndigoUnited/node-request-progress.png)
+# request-progress [![Build Status](https://secure.travis-ci.org/IndigoUnited/node-request-progress.png)](http://travis-ci.org/IndigoUnited/node-request-progress.png)
 
 Tracks the download progress of a request made with [request](https://github.com/mikeal/request).
 
