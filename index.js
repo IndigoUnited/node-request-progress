@@ -12,7 +12,7 @@ function requestProgress(emitter, options) {
     var state = {};
 
     options = options || {};
-    options.throttle = options.throttle == null ? 3000 : options.throttle;
+    options.throttle = options.throttle == null ? 1000 : options.throttle;
     options.delay = options.delay || 0;
 
     emitter.on('response', function (response) {
