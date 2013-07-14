@@ -5,6 +5,7 @@ var throttle = require('throttleit');
 function requestProgress(emitter, options) {
     var reporter;
     var delayTimer;
+    var delayCompleted;
     var totalSize;
     var previousReceivedSize;
     var receivedSize = 0;
@@ -36,11 +37,16 @@ function requestProgress(emitter, options) {
 
         // Delay the progress report
         delayTimer = setTimeout(function () {
-            emitter.on('data', function (data) {
-                receivedSize += data.length;
-                reporter();
-            });
+            delayCompleted = true;
         }, options.delay);
+    });
+
+    emitter.on('data', function (data) {
+        receivedSize += data.length;
+
+        if (delayCompleted) {
+            reporter();
+        }
     });
 
     return emitter;
