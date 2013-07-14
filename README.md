@@ -18,7 +18,7 @@ var progress = require('request-progress');
 // Note that the options argument is optional
 progress(request('http://google.com/doodle.png')), {
     throttle: 2000,  // Throttle the progress event to 2000ms, defaults to 1000ms
-    delay: 1000      // Only start to emit after 1000ms delay, defaults to 10000ms
+    delay: 1000      // Only start to emit after 1000ms delay, defaults to 0ms
 })
 .on('progress', function (state) {
     console.log('total size in bytes', state.total);

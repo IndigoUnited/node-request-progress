@@ -13,7 +13,7 @@ function requestProgress(emitter, options) {
 
     options = options || {};
     options.throttle = options.throttle == null ? 3000 : options.throttle;
-    options.delay = options.delay == null ? 10000 : options.delay;
+    options.delay = options.delay || 0;
 
     emitter.on('response', function (response) {
         state.total = totalSize = Number(response.headers['content-length']);
