@@ -15,7 +15,8 @@ function requestProgress(emitter, options) {
     options.throttle = options.throttle == null ? 1000 : options.throttle;
     options.delay = options.delay || 0;
 
-    emitter.on('response', function (response) {
+    emitter
+    .on('response', function (response) {
         state.total = totalSize = Number(response.headers['content-length']);
 
         // Check if there's no total size or is invalid (NaN)
@@ -38,14 +39,19 @@ function requestProgress(emitter, options) {
         // Delay the progress report
         delayTimer = setTimeout(function () {
             delayCompleted = true;
+            delayTimer = null;
         }, options.delay);
-    });
-
-    emitter.on('data', function (data) {
+    })
+    .on('data', function (data) {
         receivedSize += data.length;
 
         if (delayCompleted) {
             reporter();
+        }
+    })
+    .on('end', function () {
+        if (!delayCompleted) {
+            clearTimeout(delayTimer);
         }
     });
 
