@@ -6,7 +6,7 @@
         "describe",
         "it",
         "before",
-        "beforEach",
+        "beforeEach",
         "after",
         "afterEach"
     ],
