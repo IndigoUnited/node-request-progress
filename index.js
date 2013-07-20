@@ -2,7 +2,7 @@
 
 var throttle = require('throttleit');
 
-function requestProgress(emitter, options) {
+function requestProgress(request, options) {
     var reporter;
     var delayTimer;
     var delayCompleted;
@@ -15,7 +15,7 @@ function requestProgress(emitter, options) {
     options.throttle = options.throttle == null ? 1000 : options.throttle;
     options.delay = options.delay || 0;
 
-    emitter
+    request
     .on('response', function (response) {
         state.total = totalSize = Number(response.headers['content-length']);
 
@@ -33,7 +33,7 @@ function requestProgress(emitter, options) {
 
             state.received = previousReceivedSize = receivedSize;
             state.percent = Math.round(receivedSize / totalSize * 100);
-            emitter.emit('progress', state);
+            request.emit('progress', state);
         }, options.throttle);
 
         // Delay the progress report
@@ -55,7 +55,7 @@ function requestProgress(emitter, options) {
         }
     });
 
-    return emitter;
+    return request;
 }
 
 module.exports = requestProgress;
