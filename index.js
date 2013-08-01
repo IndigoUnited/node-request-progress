@@ -16,6 +16,9 @@ function requestProgress(request, options) {
     options.delay = options.delay || 0;
 
     request
+    .on('request', function () {
+        receivedSize = 0;
+    })
     .on('response', function (response) {
         state.total = totalSize = Number(response.headers['content-length']);
         receivedSize = 0;
