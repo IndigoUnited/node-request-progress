@@ -18,6 +18,7 @@ function requestProgress(request, options) {
     request
     .on('response', function (response) {
         state.total = totalSize = Number(response.headers['content-length']);
+        receivedSize = 0;
 
         // Check if there's no total size or is invalid (NaN)
         if (!totalSize) {
