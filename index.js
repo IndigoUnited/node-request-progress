@@ -4,6 +4,7 @@ var throttle = require('throttleit');
 
 function requestProgress(request, options) {
     var reporter;
+    var onResponse;
     var delayTimer;
     var delayCompleted;
     var totalSize;
@@ -15,11 +16,22 @@ function requestProgress(request, options) {
     options.throttle = options.throttle == null ? 1000 : options.throttle;
     options.delay = options.delay || 0;
 
-    request
-    .on('request', function () {
-        receivedSize = 0;
-    })
-    .on('response', function (response) {
+    // Throttle the progress report function
+    reporter = throttle(function () {
+        // If the received size is the same, do not report
+        if (previousReceivedSize === receivedSize) {
+            return;
+        }
+
+        previousReceivedSize = receivedSize;
+        state.received = receivedSize;
+        state.percent = Math.round(receivedSize / totalSize * 100);
+
+        request.emit('progress', state);
+    }, options.throttle);
+
+    // On response handler
+    onResponse = function (response) {
         state.total = totalSize = Number(response.headers['content-length']);
         receivedSize = 0;
 
@@ -28,24 +40,19 @@ function requestProgress(request, options) {
             return;
         }
 
-        // Throttle the function
-        reporter = throttle(function () {
-            // If there received size is the same, abort
-            if (previousReceivedSize === receivedSize) {
-                return;
-            }
-
-            state.received = previousReceivedSize = receivedSize;
-            state.percent = Math.round(receivedSize / totalSize * 100);
-            request.emit('progress', state);
-        }, options.throttle);
-
         // Delay the progress report
+        delayCompleted = false;
         delayTimer = setTimeout(function () {
             delayCompleted = true;
             delayTimer = null;
         }, options.delay);
+    };
+
+    request
+    .on('request', function () {
+        receivedSize = 0;
     })
+    .on('response', onResponse)
     .on('data', function (data) {
         receivedSize += data.length;
 
@@ -54,10 +61,16 @@ function requestProgress(request, options) {
         }
     })
     .on('end', function () {
-        if (!delayCompleted) {
+        if (delayTimer) {
             clearTimeout(delayTimer);
+            delayTimer = null;
         }
     });
+
+    // If we already got a response, call the on response handler
+    if (request.response) {
+        onResponse(request.response);
+    }
 
     return request;
 }
