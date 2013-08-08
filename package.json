@@ -1,6 +1,6 @@
 {
   "name": "request-progress",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Tracks the download progress of a request made with mikeal/request",
   "main": "index.js",
   "dependencies": {
