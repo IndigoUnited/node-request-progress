@@ -21,8 +21,10 @@ progress(request('http://google.com/doodle.png'), {
     delay: 1000      // Only start to emit after 1000ms delay, defaults to 0ms
 })
 .on('progress', function (state) {
-    console.log('total size in bytes', state.total);
     console.log('received size in bytes', state.received);
+    // The properties bellow can be null if response does not contain
+    // the content-length header
+    console.log('total size in bytes', state.total);
     console.log('percent', state.percent);
 })
 .on('error', function (err) {

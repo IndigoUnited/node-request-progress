@@ -23,22 +23,24 @@ function requestProgress(request, options) {
             return;
         }
 
+        // Update received
         previousReceivedSize = receivedSize;
         state.received = receivedSize;
-        state.percent = Math.round(receivedSize / totalSize * 100);
+
+        // Update percentage
+        // Note that the totalSize might available
+        state.percent = totalSize ? Math.round(receivedSize / totalSize * 100) : null;
 
         request.emit('progress', state);
     }, options.throttle);
 
     // On response handler
     onResponse = function (response) {
-        state.total = totalSize = Number(response.headers['content-length']);
+        totalSize = Number(response.headers['content-length']);
         receivedSize = 0;
 
-        // Check if there's no total size or is invalid (NaN)
-        if (!totalSize) {
-            return;
-        }
+        // Note that the totalSize might available
+        state.totalSize = totalSize || null;
 
         // Delay the progress report
         delayCompleted = false;
