@@ -40,7 +40,7 @@ function requestProgress(request, options) {
         receivedSize = 0;
 
         // Note that the totalSize might available
-        state.totalSize = totalSize || null;
+        state.total = totalSize || null;
 
         // Delay the progress report
         delayCompleted = false;
