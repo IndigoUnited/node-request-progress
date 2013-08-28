@@ -28,7 +28,7 @@ function requestProgress(request, options) {
         state.received = receivedSize;
 
         // Update percentage
-        // Note that the totalSize might available
+        // Note that the totalSize might not be available
         state.percent = totalSize ? Math.round(receivedSize / totalSize * 100) : null;
 
         request.emit('progress', state);
@@ -39,7 +39,7 @@ function requestProgress(request, options) {
         totalSize = Number(response.headers['content-length']);
         receivedSize = 0;
 
-        // Note that the totalSize might available
+        // Note that the totalSize might not be available
         state.total = totalSize || null;
 
         // Delay the progress report
