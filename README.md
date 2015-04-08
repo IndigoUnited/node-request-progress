@@ -30,13 +30,7 @@ progress(request('http://google.com/doodle.png'), {
 .on('error', function (err) {
     // Do something with err
 })
-.pipe(fs.createWriteStream('doodle.png'))
-.on('error', function (err) {
-    // Do something with err
-})
-.on('close', function (err) {
-    // Saved to doogle.png!
-})
+.pipe(fs.createWriteStream('doodle.png'));
 ```
 
 Note that the `state` object emitted in the `progress` event is reused to avoid creating a new object for each event.
