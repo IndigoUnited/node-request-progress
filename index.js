@@ -74,6 +74,8 @@ function requestProgress(request, options) {
         onResponse(request.response);
     }
 
+    request.state = state;
+
     return request;
 }
 
