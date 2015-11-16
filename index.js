@@ -36,7 +36,7 @@ function requestProgress(request, options) {
 
     // On response handler
     onResponse = function (response) {
-        totalSize = Number(response.headers['content-length']);
+        totalSize = Number(response.headers['content-length'] || options.totalSize);
         receivedSize = 0;
 
         // Note that the totalSize might not be available
