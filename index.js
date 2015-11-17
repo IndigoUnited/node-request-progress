@@ -1,6 +1,7 @@
 'use strict';
 
 var throttle = require('throttleit');
+var Eta = require('node-eta');
 
 function requestProgress(request, options) {
     var reporter;
@@ -10,6 +11,7 @@ function requestProgress(request, options) {
     var totalSize;
     var previousReceivedSize;
     var receivedSize = 0;
+    var eta;
     var state = {};
 
     options = options || {};
@@ -27,6 +29,12 @@ function requestProgress(request, options) {
         previousReceivedSize = receivedSize;
         state.received = receivedSize;
 
+        // Update eta
+        if (totalSize) {
+            eta.done = state.received;
+            state.eta = Math.floor(eta.getEtaInSeconds());
+        }
+
         // Update percentage
         // Note that the totalSize might not be available
         state.percent = totalSize ? Math.round(receivedSize / totalSize * 100) : null;
@@ -41,6 +49,11 @@ function requestProgress(request, options) {
 
         // Note that the totalSize might not be available
         state.total = totalSize || null;
+
+        if (totalSize) {
+            eta = new Eta(state.total);
+            eta.start();
+        }
 
         // Delay the progress report
         delayCompleted = false;
