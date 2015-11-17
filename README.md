@@ -26,6 +26,7 @@ progress(request('http://google.com/doodle.png'), {
     // the content-length header
     console.log('total size in bytes', state.total);
     console.log('percent', state.percent);
+    console.log('eta', state.eta);
 })
 .on('error', function (err) {
     // Do something with err

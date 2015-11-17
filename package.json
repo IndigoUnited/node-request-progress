@@ -4,6 +4,7 @@
   "description": "Tracks the download progress of a request made with mikeal/request",
   "main": "index.js",
   "dependencies": {
+    "node-eta": "~0.1.1",
     "throttleit": "~0.0.2"
   },
   "devDependencies": {
