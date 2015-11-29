@@ -35,7 +35,8 @@ progress(request('http://google.com/doodle.png'), {
 .pipe(fs.createWriteStream('doodle.png'));
 ```
 
-Note that the `state` object emitted in the `progress` event is reused to avoid creating a new object for each event.
+Note that the `state` object emitted in the `progress` event is reused to avoid creating a new object for each event.   
+If you wish to peek the `state` object at any time, it is available in `request.progressState`.
 
 
 ## License
