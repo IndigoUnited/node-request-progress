@@ -17,6 +17,7 @@ function requestProgress(request, options) {
     options = options || {};
     options.throttle = options.throttle == null ? 1000 : options.throttle;
     options.delay = options.delay || 0;
+    options.lengthHeader = options.lengthHeader || 'content-length';
 
     // Throttle the progress report function
     reporter = throttle(function () {
@@ -44,7 +45,7 @@ function requestProgress(request, options) {
 
     // On response handler
     onResponse = function (response) {
-        totalSize = Number(response.headers['content-length']);
+        totalSize = Number(response.headers[options.lengthHeader]);
         receivedSize = 0;
 
         // Note that the totalSize might not be available
