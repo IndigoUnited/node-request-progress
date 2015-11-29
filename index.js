@@ -74,6 +74,9 @@ function requestProgress(request, options) {
         onResponse(request.response);
     }
 
+    // Expose the state, see https://github.com/IndigoUnited/node-request-progress/pull/2/files
+    request.progressState = state;
+
     return request;
 }
 
