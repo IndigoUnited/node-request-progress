@@ -57,7 +57,7 @@ function onEnd(context) {
 function reportState(context) {
     var state;
 
-    // Do not if still within the initial delay or if already finished
+    // Do nothing if still within the initial delay or if already finished
     if (context.delayTimer || !context.request.progressState) {
         return;
     }
