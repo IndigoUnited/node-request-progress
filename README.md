@@ -1,18 +1,20 @@
 # request-progress
 
-[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency status][david-dm-image]][david-dm-url] [![Dev Dependency status][david-dm-dev-image]][david-dm-dev-url]
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Dependency status][david-dm-image]][david-dm-url] [![Dev Dependency status][david-dm-dev-image]][david-dm-dev-url]
 
 [npm-url]:https://npmjs.org/package/request-progress
 [downloads-image]:http://img.shields.io/npm/dm/request-progress.svg
 [npm-image]:http://img.shields.io/npm/v/request-progress.svg
 [travis-url]:https://travis-ci.org/IndigoUnited/node-request-progress
 [travis-image]:http://img.shields.io/travis/IndigoUnited/node-request-progress.svg
+[coveralls-url]:https://coveralls.io/r/IndigoUnited/node-request-progress
+[coveralls-image]:https://img.shields.io/coveralls/IndigoUnited/node-request-progress.svg
 [david-dm-url]:https://david-dm.org/IndigoUnited/node-request-progress
 [david-dm-image]:https://img.shields.io/david/IndigoUnited/node-request-progress.svg
 [david-dm-dev-url]:https://david-dm.org/IndigoUnited/node-request-progress#info=devDependencies
 [david-dm-dev-image]:https://img.shields.io/david/dev/IndigoUnited/node-request-progress.svg
 
-Tracks the download progress of a request made with [request](https://github.com/mikeal/request).
+Tracks the download progress of a request made with [request](https://github.com/mikeal/request), giving insight of various metrics including progress percent, download speed and time remaining.
 
 
 ## Installation

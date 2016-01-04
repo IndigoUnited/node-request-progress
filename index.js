@@ -1,95 +1,122 @@
 'use strict';
 
 var throttle = require('throttleit');
-var Eta = require('node-eta');
+
+function onRequest(context) {
+    // Reset dynamic stuff
+    context.startedAt = null;
+
+    context.delayTimer && clearTimeout(context.delayTimer);
+    context.delayTimer = null;
+
+    context.state = context.request.progressState = null;
+}
+
+function onResponse(context, response) {
+    // Mark start timestamp
+    context.startedAt = Date.now();
+
+    // Create state
+    // Also expose the state throught the request
+    // See https://github.com/IndigoUnited/node-request-progress/pull/2/files
+    context.state = context.request.progressState = {
+        time: {
+            ellapsed: 0,
+            remaining: null
+        },
+        speed: null,
+        percentage: null,
+        size: {
+            total: Number(response.headers[context.options.lengthHeader]) || null,
+            transferred: 0
+        }
+    };
+
+    // Delay the progress report
+    context.delayTimer = setTimeout(function () {
+        context.delayTimer = null;
+    }, context.options.delay);
+}
+
+function onData(context, data) {
+    context.state.size.transferred += data.length;
+
+    !context.delayTimer && context.reportState();
+}
+
+function onEnd(context) {
+    /* istanbul ignore if */
+    if (context.delayTimer) {
+        clearTimeout(context.delayTimer);
+        context.delayTimer = null;
+    }
+
+    context.request.progressState = context.request.progressContext = null;
+}
+
+function reportState(context) {
+    var state;
+
+    // Do not if still within the initial delay or if already finished
+    if (context.delayTimer || !context.request.progressState) {
+        return;
+    }
+
+    state = context.state;
+    state.time.ellapsed = (Date.now() - context.startedAt) / 1000;
+
+    // Calculate speed only if 1s has passed
+    if (state.time.ellapsed >= 1) {
+        state.speed = state.size.transferred / state.time.ellapsed;
+    }
+
+    // Calculate percentage & remaining only if we know the total size
+    if (state.size.total != null) {
+        state.percentage = Math.min(state.size.transferred, state.size.total) / state.size.total;
+
+        if (state.speed != null) {
+            state.time.remaining = state.percentage !== 1 ? ((state.size.total / state.speed) - state.time.ellapsed).toFixed(4) : 0;
+        }
+    }
+
+    context.request.emit('progress', state);
+}
+
 
 function requestProgress(request, options) {
-    var reporter;
-    var onResponse;
-    var delayTimer;
-    var delayCompleted;
-    var totalSize;
-    var previousReceivedSize;
-    var receivedSize = 0;
-    var eta;
-    var state = {};
+    var context;
 
+    if (request.progressContext) {
+        return request;
+    }
+
+    if (request.response) {
+        throw new Error('Already got response, it\'s too late to track progress');
+    }
+
+    // Parse options
     options = options || {};
     options.throttle = options.throttle == null ? 1000 : options.throttle;
     options.delay = options.delay || 0;
     options.lengthHeader = options.lengthHeader || 'content-length';
 
-    // Throttle the progress report function
-    reporter = throttle(function () {
-        // If the received size is the same, do not report
-        if (previousReceivedSize === receivedSize) {
-            return;
-        }
+    // Create context
+    context = {};
+    context.request = request;
+    context.options = options;
+    context.reportState = throttle(reportState.bind(null, context), options.throttle);
+    // context.startedAt = null;
+    // context.state = null;
+    // context.delayTimer = null;
 
-        // Update received
-        previousReceivedSize = receivedSize;
-        state.received = receivedSize;
-
-        // Update eta
-        if (totalSize) {
-            eta.done = state.received;
-            state.eta = Math.floor(eta.getEtaInSeconds());
-        }
-
-        // Update percentage
-        // Note that the totalSize might not be available
-        state.percent = totalSize ? Math.round(receivedSize / totalSize * 100) : null;
-
-        request.emit('progress', state);
-    }, options.throttle);
-
-    // On response handler
-    onResponse = function (response) {
-        totalSize = Number(response.headers[options.lengthHeader]);
-        receivedSize = 0;
-
-        // Note that the totalSize might not be available
-        state.total = totalSize || null;
-
-        if (totalSize) {
-            eta = new Eta(state.total);
-            eta.start();
-        }
-
-        // Delay the progress report
-        delayCompleted = false;
-        delayTimer = setTimeout(function () {
-            delayCompleted = true;
-            delayTimer = null;
-        }, options.delay);
-    };
-
+    // Attach listeners
     request
-    .on('request', function () {
-        receivedSize = 0;
-    })
-    .on('response', onResponse)
-    .on('data', function (data) {
-        receivedSize += data.length;
+    .on('request', onRequest.bind(null, context))
+    .on('response', onResponse.bind(null, context))
+    .on('data', onData.bind(null, context))
+    .on('end', onEnd.bind(null, context));
 
-        if (delayCompleted) {
-            reporter();
-        }
-    })
-    .on('end', function () {
-        if (delayTimer) {
-            clearTimeout(delayTimer);
-            delayTimer = null;
-        }
-    });
-
-    // If we already got a response, call the on response handler
-    if (request.response) {
-        onResponse(request.response);
-    }
-
-    // Expose the state, see https://github.com/IndigoUnited/node-request-progress/pull/2/files
-    request.progressState = state;
+    request.progressContext = context;
 
     return request;
 }

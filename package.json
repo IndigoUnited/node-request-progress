@@ -4,15 +4,17 @@
   "description": "Tracks the download progress of a request made with mikeal/request",
   "main": "index.js",
   "dependencies": {
-    "node-eta": "^0.1.1",
-    "throttleit": "^0.0.2"
+    "throttleit": "^1.0.0"
   },
   "devDependencies": {
-    "mocha": "^1.12.0",
-    "expect.js": "^0.2.0"
+    "expect.js": "^0.3.1",
+    "istanbul": "^0.4.1",
+    "mocha": "^2.3.4"
   },
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha -R spec --bail",
+    "test-cov": "istanbul cover --dir test/coverage _mocha && echo open test/coverage/lcov-report/index.html",
+    "test-travis": "istanbul cover node_modules/.bin/_mocha --report lcovonly"
   },
   "repository": {
     "type": "git",
