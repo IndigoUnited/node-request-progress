@@ -75,7 +75,8 @@ function reportState(context) {
         state.percentage = Math.min(state.size.transferred, state.size.total) / state.size.total;
 
         if (state.speed != null) {
-            state.time.remaining = state.percentage !== 1 ? ((state.size.total / state.speed) - state.time.ellapsed).toFixed(4) : 0;
+            state.time.remaining = state.percentage !== 1 ? (state.size.total / state.speed) - state.time.ellapsed : 0;
+            state.time.remaining = Math.round(state.time.remaining * 1000) / 1000;  // Round to 4 decimals
         }
     }
 
