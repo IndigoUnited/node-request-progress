@@ -29,19 +29,27 @@ var fs = require('fs');
 var request = require('request');
 var progress = require('request-progress');
 
-// Note that the options argument is optional
+// The options argument is optional so you can omit it
 progress(request('http://google.com/doodle.png'), {
     throttle: 2000,                    // Throttle the progress event to 2000ms, defaults to 1000ms
     delay: 1000,                       // Only start to emit after 1000ms delay, defaults to 0ms
     lengthHeader: 'x-transfer-length'  // Length header to use, defaults to content-length
 })
 .on('progress', function (state) {
-    console.log('received size in bytes', state.received);
-    // The properties bellow can be null if response does not contain
-    // the content-length header
-    console.log('total size in bytes', state.total);
-    console.log('percent', state.percent);
-    console.log('eta', state.eta);
+    // The state is an object that looks like this:
+    // {
+    //     percent: 0.5,              // Overall percent between 0 to 1
+    //     speed: 554732,             // The download speed in bytes/sec
+    //     size: {
+    //         total: 90044871,       // The total payload size in bytes
+    //         transferred: 27610959  // The transferred payload size in bytes
+    //     },
+    //     time: {
+    //         elapsed: 36.2356,      // The total elapsed seconds since the start (3 decimals)
+    //         remaining: 81.4032     // The remaining seconds to finish (3 decimals)
+    //     }
+    // }
+    console.log('progress', state);
 })
 .on('error', function (err) {
     // Do something with err
@@ -51,6 +59,11 @@ progress(request('http://google.com/doodle.png'), {
 
 Note that the `state` object emitted in the `progress` event is reused to avoid creating a new object for each event.   
 If you wish to peek the `state` object at any time, it is available in `request.progressState`.
+
+
+## Tests
+
+Simply run the test suite with `$ npm test`
 
 
 ## License
