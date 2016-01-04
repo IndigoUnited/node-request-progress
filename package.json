@@ -1,7 +1,7 @@
 {
   "name": "request-progress",
-  "version": "0.4.0",
-  "description": "Tracks the download progress of a request made with mikeal/request",
+  "version": "1.0.0",
+  "description": "Tracks the download progress of a request made with mikeal/request, giving insight of various metrics including progress percent, download speed and time remaining",
   "main": "index.js",
   "dependencies": {
     "throttleit": "^1.0.0"
@@ -31,7 +31,10 @@
     "size",
     "bytes",
     "percent",
-    "percentage"
+    "percentage",
+    "speed",
+    "eta",
+    "etr"
   ],
   "author": "IndigoUnited <hello@indigounited.com> (http://indigounited.com)",
   "license": "MIT"
