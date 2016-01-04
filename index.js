@@ -6,10 +6,10 @@ function onRequest(context) {
     // Reset dynamic stuff
     context.startedAt = null;
 
+    context.state = context.request.progressState = null;
+
     context.delayTimer && clearTimeout(context.delayTimer);
     context.delayTimer = null;
-
-    context.state = context.request.progressState = null;
 }
 
 function onResponse(context, response) {
