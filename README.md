@@ -38,7 +38,7 @@ progress(request('http://google.com/doodle.png'), {
 .on('progress', function (state) {
     // The state is an object that looks like this:
     // {
-    //     percentage: 0.5,              // Overall percentage between 0 to 1 ()
+    //     percentage: 0.5,           // Overall percentage between 0 to 1 ()
     //     speed: 554732,             // The download speed in bytes/sec
     //     size: {
     //         total: 90044871,       // The total payload size in bytes
