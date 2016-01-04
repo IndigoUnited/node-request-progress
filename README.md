@@ -14,7 +14,7 @@
 [david-dm-dev-url]:https://david-dm.org/IndigoUnited/node-request-progress#info=devDependencies
 [david-dm-dev-image]:https://img.shields.io/david/dev/IndigoUnited/node-request-progress.svg
 
-Tracks the download progress of a request made with [request](https://github.com/mikeal/request), giving insight of various metrics including progress percent, download speed and time remaining.
+Tracks the download progress of a request made with [request](https://github.com/mikeal/request), giving insight of various metrics including progress percentage, download speed and time remaining.
 
 
 ## Installation
@@ -38,7 +38,7 @@ progress(request('http://google.com/doodle.png'), {
 .on('progress', function (state) {
     // The state is an object that looks like this:
     // {
-    //     percent: 0.5,              // Overall percent between 0 to 1
+    //     percent: 0.5,              // Overall percent between 0 to 1 ()
     //     speed: 554732,             // The download speed in bytes/sec
     //     size: {
     //         total: 90044871,       // The total payload size in bytes
@@ -57,7 +57,10 @@ progress(request('http://google.com/doodle.png'), {
 .pipe(fs.createWriteStream('doodle.png'));
 ```
 
-Note that the `state` object emitted in the `progress` event is reused to avoid creating a new object for each event.   
+If the request's response does not include the `content-length` header, the values of some metrics will be `null`.
+Also `speed` and `time.remaining` will be `null` until it can be calculated.
+
+The `state` object emitted in the `progress` event is reused to avoid creating a new object for each event.   
 If you wish to peek the `state` object at any time, it is available in `request.progressState`.
 
 
