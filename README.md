@@ -66,7 +66,8 @@ If you wish to peek the `state` object at any time, it is available in `request.
 
 ## Tests
 
-Simply run the test suite with `$ npm test`
+`$ npm test`   
+`$ npm test-cov` to get coverage report
 
 
 ## License
