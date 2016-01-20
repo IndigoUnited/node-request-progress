@@ -6,7 +6,7 @@ var progress = require('../');
 
 function normalizeStates(states) {
     states.forEach(function (state) {
-        state.time.ellapsed = Math.round(state.time.ellapsed),
+        state.time.elapsed = Math.round(state.time.elapsed),
         state.time.remaining = state.time.remaining != null ? Math.round(state.time.remaining) : null;
         state.speed = state.speed != null ? Math.round(state.speed) : null;
     });
@@ -34,17 +34,17 @@ describe('request-progress', function () {
                 percentage: 0.5,
                 speed: null,
                 size: { total: 10, transferred: 5, },
-                time: { ellapsed: 0, remaining: null }
+                time: { elapsed: 0, remaining: null }
             }, {
                 percentage: 0.8,
                 speed: 7,
                 size: { total: 10, transferred: 8 },
-                time: { ellapsed: 1, remaining: 0 }
+                time: { elapsed: 1, remaining: 0 }
             }, {
                 percentage: 1,
                 speed: 8,
                 size: { total: 10, transferred: 10 },
-                time: { ellapsed: 1, remaining: 0 }
+                time: { elapsed: 1, remaining: 0 }
             }]);
 
             done();
@@ -233,12 +233,12 @@ describe('request-progress', function () {
                 percentage: null,
                 speed: null,
                 size: { total: null, transferred: 5, },
-                time: { ellapsed: 0, remaining: null }
+                time: { elapsed: 0, remaining: null }
             }, {
                 percentage: null,
                 speed: 10,
                 size: { total: null, transferred: 12, },
-                time: { ellapsed: 1, remaining: null }
+                time: { elapsed: 1, remaining: null }
             }]);
 
             done();
@@ -266,12 +266,12 @@ describe('request-progress', function () {
                 percentage: 0.5,
                 speed: null,
                 size: { total: 10, transferred: 5, },
-                time: { ellapsed: 0, remaining: null }
+                time: { elapsed: 0, remaining: null }
             }, {
                 percentage: 1,
                 speed: 10,
                 size: { total: 10, transferred: 12 },
-                time: { ellapsed: 1, remaining: 0 }
+                time: { elapsed: 1, remaining: 0 }
             }]);
 
             done();
