@@ -45,8 +45,8 @@ progress(request('http://google.com/doodle.png'), {
     //         transferred: 27610959  // The transferred payload size in bytes
     //     },
     //     time: {
-    //         elapsed: 36.235,      // The total elapsed seconds since the start (3 decimals)
-    //         remaining: 81.403     // The remaining seconds to finish (3 decimals)
+    //         elapsed: 36.235,       // The total elapsed seconds since the start (3 decimals)
+    //         remaining: 81.403      // The remaining seconds to finish (3 decimals)
     //     }
     // }
     console.log('progress', state);
