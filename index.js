@@ -21,7 +21,7 @@ function onResponse(context, response) {
     // See https://github.com/IndigoUnited/node-request-progress/pull/2/files
     context.state = context.request.progressState = {
         time: {
-            ellapsed: 0,
+            elapsed: 0,
             remaining: null
         },
         speed: null,
@@ -63,11 +63,11 @@ function reportState(context) {
     }
 
     state = context.state;
-    state.time.ellapsed = (Date.now() - context.startedAt) / 1000;
+    state.time.elapsed = (Date.now() - context.startedAt) / 1000;
 
     // Calculate speed only if 1s has passed
-    if (state.time.ellapsed >= 1) {
-        state.speed = state.size.transferred / state.time.ellapsed;
+    if (state.time.elapsed >= 1) {
+        state.speed = state.size.transferred / state.time.elapsed;
     }
 
     // Calculate percentage & remaining only if we know the total size
@@ -75,7 +75,7 @@ function reportState(context) {
         state.percentage = Math.min(state.size.transferred, state.size.total) / state.size.total;
 
         if (state.speed != null) {
-            state.time.remaining = state.percentage !== 1 ? (state.size.total / state.speed) - state.time.ellapsed : 0;
+            state.time.remaining = state.percentage !== 1 ? (state.size.total / state.speed) - state.time.elapsed : 0;
             state.time.remaining = Math.round(state.time.remaining * 1000) / 1000;  // Round to 4 decimals
         }
     }
