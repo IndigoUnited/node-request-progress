@@ -54,6 +54,9 @@ progress(request('http://google.com/doodle.png'), {
 .on('error', function (err) {
     // Do something with err
 })
+.on('end', function () {
+    // Do something after request finishes
+})
 .pipe(fs.createWriteStream('doodle.png'));
 ```
 
