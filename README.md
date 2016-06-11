@@ -57,7 +57,7 @@ progress(request('https://az412801.vo.msecnd.net/vhd/VMBuild_20141027/VirtualBox
 .on('end', function () {
     // Do something after request finishes
 })
-.pipe(fs.createWriteStream('doodle.png'));
+.pipe(fs.createWriteStream('IE11.Win8.1.For.Windows.VirtualBox.zip'));
 ```
 
 If the request's response does not include the `content-length` header, the values of some metrics will be `null`.
