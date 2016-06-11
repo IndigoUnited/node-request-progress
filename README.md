@@ -31,9 +31,9 @@ var progress = require('request-progress');
 
 // The options argument is optional so you can omit it
 progress(request('https://az412801.vo.msecnd.net/vhd/VMBuild_20141027/VirtualBox/IE11/Windows/IE11.Win8.1.For.Windows.VirtualBox.zip'), {
-    throttle: 2000,                    // Throttle the progress event to 2000ms, defaults to 1000ms
-    delay: 1000,                       // Only start to emit after 1000ms delay, defaults to 0ms
-    lengthHeader: 'x-transfer-length'  // Length header to use, defaults to content-length
+    // throttle: 2000,                    // Throttle the progress event to 2000ms, defaults to 1000ms
+    // delay: 1000,                       // Only start to emit after 1000ms delay, defaults to 0ms
+    // lengthHeader: 'x-transfer-length'  // Length header to use, defaults to content-length
 })
 .on('progress', function (state) {
     // The state is an object that looks like this:
