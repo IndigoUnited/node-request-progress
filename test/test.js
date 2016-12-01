@@ -362,7 +362,9 @@ describe('request-progress', function () {
         expect(request.progressState).to.be(null);
     });
 
-    it('should ignore "data" event from the request', function (done) {
+    it('should hook into "data" event from the response and not the request', function (done) {
+        // See: https://github.com/IndigoUnited/node-request-progress/issues/20
+        
         progress(request, { throttle: 0 })
             .on('end', function () {
                 expect(states).to.have.length(2);
