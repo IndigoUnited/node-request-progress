@@ -25,7 +25,7 @@ function onResponse(context, response) {
             remaining: null
         },
         speed: null,
-        percentage: null,
+        percent: null,
         size: {
             total: Number(response.headers[context.options.lengthHeader]) || null,
             transferred: 0
@@ -70,12 +70,12 @@ function reportState(context) {
         state.speed = state.size.transferred / state.time.elapsed;
     }
 
-    // Calculate percentage & remaining only if we know the total size
+    // Calculate percent & remaining only if we know the total size
     if (state.size.total != null) {
-        state.percentage = Math.min(state.size.transferred, state.size.total) / state.size.total;
+        state.percent = Math.min(state.size.transferred, state.size.total) / state.size.total;
 
         if (state.speed != null) {
-            state.time.remaining = state.percentage !== 1 ? (state.size.total / state.speed) - state.time.elapsed : 0;
+            state.time.remaining = state.percent !== 1 ? (state.size.total / state.speed) - state.time.elapsed : 0;
             state.time.remaining = Math.round(state.time.remaining * 1000) / 1000;  // Round to 4 decimals
         }
     }

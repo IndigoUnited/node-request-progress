@@ -33,17 +33,17 @@ describe('request-progress', function () {
             normalizeStates(states);
 
             expect(states).to.eql([{
-                percentage: 0.5,
+                percent: 0.5,
                 speed: null,
                 size: { total: 10, transferred: 5, },
                 time: { elapsed: 0, remaining: null }
             }, {
-                percentage: 0.8,
+                percent: 0.8,
                 speed: 7,
                 size: { total: 10, transferred: 8 },
                 time: { elapsed: 1, remaining: 0 }
             }, {
-                percentage: 1,
+                percent: 1,
                 speed: 8,
                 size: { total: 10, transferred: 10 },
                 time: { elapsed: 1, remaining: 0 }
@@ -90,14 +90,14 @@ describe('request-progress', function () {
             response.emit('data', new Buffer('a'));
             expect(request.progressContext).to.be.an('object');
             expect(request.progressState).to.be.an('object');
-            expect(request.progressState.percentage).to.be(0.5);
+            expect(request.progressState.percent).to.be(0.5);
         }, 25);
 
         setTimeout(function () {
             response.emit('data', new Buffer('b'));
             expect(request.progressContext).to.be.an('object');
             expect(request.progressState).to.be.an('object');
-            expect(request.progressState.percentage).to.be(1);
+            expect(request.progressState.percent).to.be(1);
             request.emit('end');
         }, 100);
     });
@@ -111,8 +111,8 @@ describe('request-progress', function () {
         progress(request, { throttle: 0, delay: 250 })
         .on('end', function () {
             expect(states).to.have.length(2);
-            expect(states[0].percentage).to.be(0.6);
-            expect(states[1].percentage).to.be(1);
+            expect(states[0].percent).to.be(0.6);
+            expect(states[1].percent).to.be(1);
 
             done();
         });
@@ -147,9 +147,9 @@ describe('request-progress', function () {
         progress(request, { throttle: 300, delay: 0 })
         .on('end', function () {
             expect(states).to.have.length(3);
-            expect(states[0].percentage).to.be(0.2);
-            expect(states[1].percentage).to.be(0.6);
-            expect(states[2].percentage).to.be(0.9);
+            expect(states[0].percent).to.be(0.2);
+            expect(states[1].percent).to.be(0.6);
+            expect(states[2].percent).to.be(0.9);
 
             done();
         });
@@ -195,9 +195,9 @@ describe('request-progress', function () {
         })
         .on('end', function () {
             expect(states).to.have.length(2);
-            expect(states[0].percentage).to.be(0.5);
+            expect(states[0].percent).to.be(0.5);
             expect(states[0].size.total).to.be(10);
-            expect(states[1].percentage).to.be(1);
+            expect(states[1].percent).to.be(1);
             expect(states[1].size.total).to.be(10);
 
             done();
@@ -232,12 +232,12 @@ describe('request-progress', function () {
             normalizeStates(states);
 
             expect(states).to.eql([{
-                percentage: null,
+                percent: null,
                 speed: null,
                 size: { total: null, transferred: 5, },
                 time: { elapsed: 0, remaining: null }
             }, {
-                percentage: null,
+                percent: null,
                 speed: 10,
                 size: { total: null, transferred: 12, },
                 time: { elapsed: 1, remaining: null }
@@ -265,12 +265,12 @@ describe('request-progress', function () {
             normalizeStates(states);
 
             expect(states).to.eql([{
-                percentage: 0.5,
+                percent: 0.5,
                 speed: null,
                 size: { total: 10, transferred: 5, },
                 time: { elapsed: 0, remaining: null }
             }, {
-                percentage: 1,
+                percent: 1,
                 speed: 10,
                 size: { total: 10, transferred: 12 },
                 time: { elapsed: 1, remaining: 0 }
@@ -311,7 +311,7 @@ describe('request-progress', function () {
             normalizeStates(states);
 
             expect(states).to.have.length(1);
-            expect(states[0].percentage).to.be(0.2);
+            expect(states[0].percent).to.be(0.2);
 
             done();
         }, 500);
@@ -322,7 +322,7 @@ describe('request-progress', function () {
         progress(request, { throttle: 0 })
         .on('end', function () {
             expect(states).to.have.length(1);
-            expect(states[0].percentage).to.be(1);
+            expect(states[0].percent).to.be(1);
 
             done();
         });
@@ -360,8 +360,8 @@ describe('request-progress', function () {
         progress(request, { throttle: 0 })
             .on('end', function () {
                 expect(states).to.have.length(2);
-                expect(states[0].percentage).to.be(0.5);
-                expect(states[1].percentage).to.be(1);
+                expect(states[0].percent).to.be(0.5);
+                expect(states[1].percent).to.be(1);
 
                 done();
             });
