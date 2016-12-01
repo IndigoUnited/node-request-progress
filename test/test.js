@@ -53,8 +53,7 @@ describe('request-progress', function () {
         });
 
         request.emit('request');
-        response.headers = { 'content-length': 10 };
-        request.emit('response', response);
+        request.emit('response', Object.assign(response, { headers: { 'content-length': 10 } }));
 
         setTimeout(function () {
             response.emit('data', new Buffer('aaaaa'));
@@ -82,8 +81,7 @@ describe('request-progress', function () {
         expect(request.progressState).to.be(undefined);
 
         request.emit('request');
-        response.headers = { 'content-length': 2 };
-        request.emit('response', response);
+        request.emit('response', Object.assign(response, { headers: { 'content-length': 2 } }));
 
         expect(request.progressContext).to.be.an('object');
         expect(request.progressState).to.be.an('object');
@@ -120,8 +118,7 @@ describe('request-progress', function () {
         });
 
         request.emit('request');
-        response.headers = { 'content-length': 10 };
-        request.emit('response', response);
+        request.emit('response', Object.assign(response, { headers: { 'content-length': 10 } }));
 
         setTimeout(function () {
             response.emit('data', new Buffer('aa'));
@@ -158,8 +155,7 @@ describe('request-progress', function () {
         });
 
         request.emit('request');
-        response.headers = { 'content-length': 10 };
-        request.emit('response', response);
+        request.emit('response', Object.assign(response, { headers: { 'content-length': 10 } }));
 
         setTimeout(function () {
             response.emit('data', new Buffer('aa'));
@@ -208,8 +204,9 @@ describe('request-progress', function () {
         });
 
         request.emit('request');
-        response.headers = { 'x-transfer-length': 10, 'content-length': 5 };
-        request.emit('response', response);
+        request.emit('response', Object.assign(response, {
+            headers: { 'x-transfer-length': 10, 'content-length': 5 }
+        }));
 
         setTimeout(function () {
             response.emit('data', new Buffer('aaaaa'));
@@ -250,8 +247,7 @@ describe('request-progress', function () {
         });
 
         request.emit('request');
-        response.headers = {};
-        request.emit('response', response);
+        request.emit('response', Object.assign(response, { headers: {} }));
 
         setTimeout(function () {
             response.emit('data', new Buffer('aaaaa'));
@@ -285,7 +281,7 @@ describe('request-progress', function () {
 
         request.emit('request');
         response.headers = { 'content-length': 10 };
-        request.emit('response', response);
+        request.emit('response', Object.assign(response, { headers: { 'content-length': 10 } }));
 
         setTimeout(function () {
             response.emit('data', new Buffer('aaaaa'));
@@ -334,8 +330,7 @@ describe('request-progress', function () {
         });
 
         request.emit('request');
-        response.headers = { 'content-length': 2 };
-        request.emit('response', response);
+        request.emit('response', Object.assign(response, { headers: { 'content-length': 2 } }));
 
         setTimeout(function () {
             response.emit('data', new Buffer('aa'));
@@ -350,8 +345,7 @@ describe('request-progress', function () {
         expect(request.progressState).to.be(undefined);
 
         request.emit('request');
-        response.headers = { 'content-length': 2 };
-        request.emit('response', response);
+        request.emit('response', Object.assign(response, { headers: { 'content-length': 2 } }));
 
         expect(request.progressContext).to.be.an('object');
         expect(request.progressState).to.be.an('object');
@@ -364,7 +358,7 @@ describe('request-progress', function () {
 
     it('should hook into "data" event from the response and not the request', function (done) {
         // See: https://github.com/IndigoUnited/node-request-progress/issues/20
-        
+
         progress(request, { throttle: 0 })
             .on('end', function () {
                 expect(states).to.have.length(2);
@@ -375,8 +369,7 @@ describe('request-progress', function () {
             });
 
         request.emit('request');
-        response.headers = { 'content-length': 4 };
-        request.emit('response', response);
+        request.emit('response', Object.assign(response, { headers: { 'content-length': 4 } }));
 
         setTimeout(function () {
             response.emit('data', new Buffer('aa'));
