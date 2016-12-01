@@ -280,7 +280,6 @@ describe('request-progress', function () {
         });
 
         request.emit('request');
-        response.headers = { 'content-length': 10 };
         request.emit('response', Object.assign(response, { headers: { 'content-length': 10 } }));
 
         setTimeout(function () {
@@ -297,8 +296,7 @@ describe('request-progress', function () {
         progress(request, { throttle: 100 });
 
         request.emit('request');
-        response.headers = { 'content-length': 10 };
-        request.emit('response', response);
+        request.emit('response', Object.assign(response, { headers: { 'content-length': 10 } }));
 
         setTimeout(function () {
             response.emit('data', new Buffer('aa'));
