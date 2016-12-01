@@ -15,10 +15,12 @@ function normalizeStates(states) {
 describe('request-progress', function () {
     var request;
     var states;
+    var response;
 
     beforeEach(function () {
         states = [];
         request = new EventEmitter();
+        response = new EventEmitter();
 
         request.on('progress', function (state) {
             states.push(JSON.parse(JSON.stringify(state)));
@@ -51,18 +53,19 @@ describe('request-progress', function () {
         });
 
         request.emit('request');
-        request.emit('response', { headers: { 'content-length': 10 } });
+        response.headers = { 'content-length': 10 };
+        request.emit('response', response);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('aaaaa'));
+            response.emit('data', new Buffer('aaaaa'));
         }, 25);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('bbb'));
+            response.emit('data', new Buffer('bbb'));
         }, 1150);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('cc'));
+            response.emit('data', new Buffer('cc'));
             request.emit('end');
         }, 1250);
     });
@@ -79,20 +82,21 @@ describe('request-progress', function () {
         expect(request.progressState).to.be(undefined);
 
         request.emit('request');
-        request.emit('response', { headers: { 'content-length': 2 } });
+        response.headers = { 'content-length': 2 };
+        request.emit('response', response);
 
         expect(request.progressContext).to.be.an('object');
         expect(request.progressState).to.be.an('object');
 
         setTimeout(function () {
-            request.emit('data', new Buffer('a'));
+            response.emit('data', new Buffer('a'));
             expect(request.progressContext).to.be.an('object');
             expect(request.progressState).to.be.an('object');
             expect(request.progressState.percentage).to.be(0.5);
         }, 25);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('b'));
+            response.emit('data', new Buffer('b'));
             expect(request.progressContext).to.be.an('object');
             expect(request.progressState).to.be.an('object');
             expect(request.progressState.percentage).to.be(1);
@@ -116,22 +120,23 @@ describe('request-progress', function () {
         });
 
         request.emit('request');
-        request.emit('response', { headers: { 'content-length': 10 } });
+        response.headers = { 'content-length': 10 };
+        request.emit('response', response);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('aa'));
+            response.emit('data', new Buffer('aa'));
         }, 25);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('bb'));
+            response.emit('data', new Buffer('bb'));
         }, 200);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('cc'));
+            response.emit('data', new Buffer('cc'));
         }, 300);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('dddd'));
+            response.emit('data', new Buffer('dddd'));
             request.emit('end');
         }, 400);
     });
@@ -153,30 +158,31 @@ describe('request-progress', function () {
         });
 
         request.emit('request');
-        request.emit('response', { headers: { 'content-length': 10 } });
+        response.headers = { 'content-length': 10 };
+        request.emit('response', response);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('aa'));
+            response.emit('data', new Buffer('aa'));
         }, 25);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('bb'));
+            response.emit('data', new Buffer('bb'));
         }, 100);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('cc'));
+            response.emit('data', new Buffer('cc'));
         }, 300);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('dd'));
+            response.emit('data', new Buffer('dd'));
         }, 400);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('e'));
+            response.emit('data', new Buffer('e'));
         }, 500);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('bf'));
+            response.emit('data', new Buffer('bf'));
             request.emit('end');
         }, 700);
     });
@@ -202,16 +208,15 @@ describe('request-progress', function () {
         });
 
         request.emit('request');
-        request.emit('response', {
-            headers: { 'x-transfer-length': 10, 'content-length': 5 }
-        });
+        response.headers = { 'x-transfer-length': 10, 'content-length': 5 };
+        request.emit('response', response);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('aaaaa'));
+            response.emit('data', new Buffer('aaaaa'));
         }, 25);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('bbbbb'));
+            response.emit('data', new Buffer('bbbbb'));
             request.emit('end');
         }, 200);
     });
@@ -245,14 +250,15 @@ describe('request-progress', function () {
         });
 
         request.emit('request');
-        request.emit('response', { headers: {} });
+        response.headers = {};
+        request.emit('response', response);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('aaaaa'));
+            response.emit('data', new Buffer('aaaaa'));
         }, 25);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('bbbbbbb'));
+            response.emit('data', new Buffer('bbbbbbb'));
             request.emit('end');
         }, 1150);
     });
@@ -278,14 +284,15 @@ describe('request-progress', function () {
         });
 
         request.emit('request');
-        request.emit('response', { headers: { 'content-length': 10 } });
+        response.headers = { 'content-length': 10 };
+        request.emit('response', response);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('aaaaa'));
+            response.emit('data', new Buffer('aaaaa'));
         }, 25);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('bbbbbbb'));
+            response.emit('data', new Buffer('bbbbbbb'));
             request.emit('end');
         }, 1150);
     });
@@ -294,14 +301,15 @@ describe('request-progress', function () {
         progress(request, { throttle: 100 });
 
         request.emit('request');
-        request.emit('response', { headers: { 'content-length': 10 } });
+        response.headers = { 'content-length': 10 };
+        request.emit('response', response);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('aa'));
+            response.emit('data', new Buffer('aa'));
         }, 25);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('bbbbbbbb'));
+            response.emit('data', new Buffer('bbbbbbbb'));
             request.emit('end');
         }, 50);
 
@@ -326,10 +334,11 @@ describe('request-progress', function () {
         });
 
         request.emit('request');
-        request.emit('response', { headers: { 'content-length': 2 } });
+        response.headers = { 'content-length': 2 };
+        request.emit('response', response);
 
         setTimeout(function () {
-            request.emit('data', new Buffer('aa'));
+            response.emit('data', new Buffer('aa'));
             request.emit('end');
         }, 25);
     });
@@ -341,7 +350,8 @@ describe('request-progress', function () {
         expect(request.progressState).to.be(undefined);
 
         request.emit('request');
-        request.emit('response', { headers: { 'content-length': 2 } });
+        response.headers = { 'content-length': 2 };
+        request.emit('response', response);
 
         expect(request.progressContext).to.be.an('object');
         expect(request.progressState).to.be.an('object');
@@ -350,5 +360,33 @@ describe('request-progress', function () {
 
         expect(request.progressContext).to.be.an('object');
         expect(request.progressState).to.be(null);
+    });
+
+    it('should ignore "data" event from the request', function (done) {
+        progress(request, { throttle: 0 })
+            .on('end', function () {
+                expect(states).to.have.length(2);
+                expect(states[0].percentage).to.be(0.5);
+                expect(states[1].percentage).to.be(1);
+
+                done();
+            });
+
+        request.emit('request');
+        response.headers = { 'content-length': 4 };
+        request.emit('response', response);
+
+        setTimeout(function () {
+            response.emit('data', new Buffer('aa'));
+        }, 25);
+
+        setTimeout(function () {
+            request.emit('data', new Buffer('aa'));
+        }, 50);
+
+        setTimeout(function () {
+            response.emit('data', new Buffer('aa'));
+            request.emit('end');
+        }, 100);
     });
 });
