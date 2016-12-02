@@ -115,7 +115,7 @@ function requestProgress(request, options) {
     .on('request', onRequest.bind(null, context))
     .on('response', function handleResponse(response) {
         response.on('data', onData.bind(null, context));
-        
+
         return onResponse(context, response);
     })
     .on('end', onEnd.bind(null, context));
