@@ -11,7 +11,7 @@
 [coveralls-image]:https://img.shields.io/coveralls/IndigoUnited/node-request-progress/master.svg
 [david-dm-url]:https://david-dm.org/IndigoUnited/node-request-progress
 [david-dm-image]:https://img.shields.io/david/IndigoUnited/node-request-progress.svg
-[david-dm-dev-url]:https://david-dm.org/IndigoUnited/node-request-progress#info=devDependencies
+[david-dm-dev-url]:https://david-dm.org/IndigoUnited/node-request-progress?type=dev
 [david-dm-dev-image]:https://img.shields.io/david/dev/IndigoUnited/node-request-progress.svg
 
 Tracks the download progress of a request made with [request](https://github.com/mikeal/request), giving insight of various metrics including progress percentage, download speed and time remaining.
