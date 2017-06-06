@@ -1,6 +1,6 @@
 # request-progress
 
-[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Dependency status][david-dm-image]][david-dm-url] [![Dev Dependency status][david-dm-dev-image]][david-dm-dev-url]
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Dependency status][david-dm-image]][david-dm-url] [![Dev Dependency status][david-dm-dev-image]][david-dm-dev-url] [![Greenkeeper badge][greenkeeper-image]][greenkeeper-url]
 
 [npm-url]:https://npmjs.org/package/request-progress
 [downloads-image]:http://img.shields.io/npm/dm/request-progress.svg
@@ -13,6 +13,8 @@
 [david-dm-image]:https://img.shields.io/david/IndigoUnited/node-request-progress.svg
 [david-dm-dev-url]:https://david-dm.org/IndigoUnited/node-request-progress?type=dev
 [david-dm-dev-image]:https://img.shields.io/david/dev/IndigoUnited/node-request-progress.svg
+[greenkeeper-image]:https://badges.greenkeeper.io/IndigoUnited/node-request-progress.svg
+[greenkeeper-url]:https://greenkeeper.io/
 
 Tracks the download progress of a request made with [request](https://github.com/mikeal/request), giving insight of various metrics including progress percentage, download speed and time remaining.
 
